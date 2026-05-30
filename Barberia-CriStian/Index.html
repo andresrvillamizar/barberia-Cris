@@ -1,0 +1,1535 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Barbería Cristian — Rancagua</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:    #000000;
+      --black-2:  #0a0a0a;
+      --black-3:  #111111;
+      --black-4:  #1a1a1a;
+      --red:      #cc0000;
+      --red-dark: #a30000;
+      --white:    #ffffff;
+      --gray:     #cccccc;
+      --gray-dim: #888888;
+      --gray-2:   #515154;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: var(--black);
+      color: var(--white);
+      overflow-x: hidden;
+    }
+
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--black); }
+    ::-webkit-scrollbar-thumb { background: var(--red); border-radius: 2px; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5%;
+      transition: background 0.4s, backdrop-filter 0.4s;
+    }
+    nav.scrolled {
+      background: rgba(0,0,0,0.93);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+    .nav-logo img {
+      height: 36px;
+      width: auto;
+      filter: brightness(1);
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--gray);
+      text-decoration: none;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      transition: color 0.25s;
+    }
+    .nav-links a:hover { color: var(--white); }
+    .nav-cta {
+      background: var(--red) !important;
+      color: var(--white) !important;
+      padding: 0.5rem 1.2rem;
+      border-radius: 2px;
+      transition: background 0.25s !important;
+    }
+    .nav-cta:hover { background: var(--red-dark) !important; }
+
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--white);
+      transition: all 0.3s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.97);
+      z-index: 199;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2.5rem;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-size: 1.6rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--white);
+      text-decoration: none;
+      transition: color 0.25s;
+    }
+    .mobile-menu a:hover { color: var(--red); }
+    .mobile-menu .m-cta {
+      background: var(--red);
+      color: var(--white);
+      padding: 0.8rem 2.5rem;
+      border-radius: 2px;
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+    .mobile-menu .m-cta:hover { background: var(--red-dark); color: var(--white); }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('https://barberiacristian.cl/wp-content/uploads/2022/09/hero-barberia-cristian-2.jpg');
+      background-size: cover;
+      background-position: center;
+      transform: scale(1.05);
+      transition: transform 0.1s;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.72);
+    }
+    .hero-overlay-gradient {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 60%);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 6rem 5%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+    .hero-text { /* left column */ }
+    .hero-video-box {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16/9;
+      border: 2px solid rgba(204,0,0,0.5);
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.06), 0 24px 60px rgba(0,0,0,0.7);
+      overflow: hidden;
+      opacity: 0;
+      transform: translateX(30px);
+      transition: opacity 0.8s 0.6s ease, transform 0.8s 0.6s ease;
+    }
+    .hero-video-box.visible { opacity: 1; transform: translateX(0); }
+    .hero-video-box iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      border: none;
+    }
+    .hero-video-label {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 0.6rem 1rem;
+      background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+      z-index: 2;
+    }
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 1.2rem;
+      opacity: 0;
+      transform: translateY(15px);
+      transition: opacity 0.6s 0.2s, transform 0.6s 0.2s;
+    }
+    .hero-tag.visible { opacity: 1; transform: translateY(0); }
+    .hero-tag::before {
+      content: '';
+      display: inline-block;
+      width: 28px;
+      height: 2px;
+      background: var(--red);
+    }
+    .hero-title {
+      font-size: clamp(3rem, 9vw, 7.5rem);
+      font-weight: 800;
+      text-transform: uppercase;
+      line-height: 0.95;
+      letter-spacing: -0.01em;
+      color: var(--white);
+      margin-bottom: 1rem;
+      opacity: 0;
+      transform: translateY(25px);
+      transition: opacity 0.7s 0.4s, transform 0.7s 0.4s;
+    }
+    .hero-title.visible { opacity: 1; transform: translateY(0); }
+    .hero-subtitle {
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      font-weight: 300;
+      text-transform: uppercase;
+      letter-spacing: 0.25em;
+      color: var(--gray);
+      margin-bottom: 2rem;
+      opacity: 0;
+      transition: opacity 0.6s 0.65s;
+    }
+    .hero-subtitle.visible { opacity: 1; }
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      opacity: 0;
+      transition: opacity 0.6s 0.85s;
+    }
+    .hero-actions.visible { opacity: 1; }
+
+    /* Buttons */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--red);
+      color: var(--white);
+      font-family: 'Roboto', sans-serif;
+      font-weight: 700;
+      font-size: 0.82rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.9rem 2rem;
+      min-height: 44px;
+      border-radius: 2px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: background 0.25s, transform 0.2s;
+    }
+    .btn-primary:hover { background: var(--red-dark); transform: translateY(-2px); }
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: transparent;
+      color: var(--white);
+      font-family: 'Roboto', sans-serif;
+      font-weight: 700;
+      font-size: 0.82rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.9rem 2rem;
+      min-height: 44px;
+      border-radius: 2px;
+      border: 1px solid rgba(255,255,255,0.3);
+      text-decoration: none;
+      transition: border-color 0.25s, background 0.25s;
+    }
+    .btn-outline:hover { border-color: var(--white); background: rgba(255,255,255,0.05); }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 2rem;
+      right: 5%;
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      color: var(--gray-dim);
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      animation: bob 2s ease-in-out infinite;
+    }
+    .hero-scroll::after {
+      content: '';
+      width: 1px;
+      height: 36px;
+      background: linear-gradient(to bottom, var(--gray-dim), transparent);
+    }
+    @keyframes bob {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(8px); }
+    }
+
+
+    /* ── SECTION BASE ── */
+    section { padding: 6rem 5%; }
+    .section-inner { max-width: 1100px; margin: 0 auto; }
+    .section-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 0.8rem;
+    }
+    .section-tag::before {
+      content: '';
+      width: 24px;
+      height: 2px;
+      background: var(--red);
+      flex-shrink: 0;
+    }
+    .section-title {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 800;
+      text-transform: uppercase;
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      color: var(--white);
+      margin-bottom: 1.2rem;
+    }
+
+    /* Reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(35px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-35px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal-left.visible { opacity: 1; transform: translateX(0); }
+    .reveal-right {
+      opacity: 0;
+      transform: translateX(35px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal-right.visible { opacity: 1; transform: translateX(0); }
+
+    /* ── ABOUT ── */
+    .about { background: var(--black-2); }
+    .about-grid {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+    .about-image-wrap {
+      position: relative;
+      width: 300px;
+      flex-shrink: 0;
+    }
+    .about-image-wrap::before {
+      content: '';
+      position: absolute;
+      top: -14px;
+      left: -14px;
+      right: 14px;
+      bottom: 14px;
+      border: 2px solid var(--red);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .about-img {
+      width: 300px;
+      height: 300px;
+      object-fit: cover;
+      object-position: top center;
+      display: block;
+      position: relative;
+      z-index: 1;
+    }
+    .about-img-placeholder {
+      width: 100%;
+      aspect-ratio: 1/1;
+      background: var(--black-4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gray-dim);
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+    }
+    .about-badge {
+      position: absolute;
+      bottom: -1.5rem;
+      right: -1.5rem;
+      width: 90px;
+      height: 90px;
+      background: var(--red);
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .about-badge strong {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1;
+    }
+    .about-badge span {
+      font-size: 0.52rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.85);
+      text-align: center;
+      line-height: 1.3;
+    }
+    .about-text p {
+      font-size: 0.95rem;
+      font-weight: 300;
+      line-height: 1.8;
+      color: var(--gray);
+      margin-bottom: 1.2rem;
+    }
+    .about-text p strong { color: var(--white); font-weight: 700; }
+    .about-detail {
+      display: flex;
+      gap: 0.8rem;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+    }
+    .about-detail-icon {
+      width: 38px;
+      height: 38px;
+      background: rgba(204,0,0,0.15);
+      border: 1px solid rgba(204,0,0,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--red);
+    }
+    .about-detail-text strong {
+      display: block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 0.15rem;
+    }
+    .about-detail-text span {
+      font-size: 0.88rem;
+      color: var(--gray);
+    }
+
+    /* ── SERVICES ── */
+    .services { background: var(--black); }
+    .services-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 3rem;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 1px;
+      background: rgba(255,255,255,0.05);
+    }
+    .service-card {
+      background: var(--black-2);
+      padding: 2.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s;
+      opacity: 0;
+      transform: translateY(25px);
+      transition: opacity 0.6s, transform 0.6s, background 0.3s;
+    }
+    .service-card.visible { opacity: 1; transform: translateY(0); }
+    .service-card:hover { background: var(--black-3); }
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--red);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.35s;
+    }
+    .service-card:hover::before { transform: scaleX(1); }
+    .service-card-img {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      display: block;
+      margin-bottom: 1.5rem;
+    }
+    .service-card-img-placeholder {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: var(--black-4);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gray-dim);
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+    }
+    .service-card-icon {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+    .service-card-tag {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 0.5rem;
+    }
+    .service-card-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--white);
+      margin-bottom: 0.7rem;
+    }
+    .service-card-desc {
+      font-size: 0.85rem;
+      font-weight: 300;
+      color: var(--gray);
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+    }
+    .service-card-price {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--white);
+    }
+    .service-card-price-note {
+      font-size: 0.72rem;
+      font-weight: 400;
+      color: var(--gray-dim);
+      margin-top: 0.2rem;
+    }
+
+    /* ── OFFER ── */
+    .offer {
+      position: relative;
+      background: var(--black-2);
+      overflow: hidden;
+    }
+    .offer-inner {
+      display: grid;
+      grid-template-columns: 55% 45%;
+      min-height: 660px;
+    }
+    .offer-image-col {
+      position: relative;
+      overflow: hidden;
+    }
+    .offer-image-col img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+    .offer-image-col::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, rgba(0,0,0,0.15) 40%, var(--black-2) 100%);
+      pointer-events: none;
+    }
+    .offer-badge {
+      position: absolute;
+      top: 1.5rem;
+      left: 1.5rem;
+      background: var(--red);
+      color: var(--white);
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.5rem 1rem;
+      z-index: 2;
+    }
+    .offer-content {
+      padding: 5rem 6% 5rem 4rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .offer-text .section-title { font-size: clamp(1.8rem, 4vw, 2.8rem); }
+    .offer-price-wrap {
+      display: flex;
+      align-items: baseline;
+      gap: 0.7rem;
+      margin: 1.5rem 0;
+    }
+    .offer-price {
+      font-size: 4rem;
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1;
+    }
+    .offer-price-detail {
+      font-size: 0.85rem;
+      color: var(--gray-dim);
+      font-weight: 300;
+    }
+    .offer-savings {
+      font-size: 0.8rem;
+      color: var(--red);
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+    .offer-features {
+      list-style: none;
+      margin: 1.5rem 0 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+    .offer-features li {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-size: 0.88rem;
+      color: var(--gray);
+      font-weight: 300;
+    }
+    .offer-features li::before {
+      content: '✂';
+      color: var(--red);
+      font-weight: 400;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+    }
+    .offer-bank {
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 1.2rem 1.5rem;
+      margin-top: 1.5rem;
+    }
+    .offer-bank-title {
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 0.8rem;
+    }
+    .offer-bank-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      color: var(--gray-dim);
+      padding: 0.2rem 0;
+    }
+    .offer-bank-row span:last-child { color: var(--gray); font-weight: 700; }
+
+    /* ── GALLERY ── */
+    .gallery { background: var(--black-3); }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+      margin-top: 3rem;
+    }
+    .gallery-item {
+      overflow: hidden;
+      aspect-ratio: 4/3;
+      opacity: 0;
+      transition: opacity 0.6s;
+    }
+    .gallery-item.visible { opacity: 1; }
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s;
+    }
+    .gallery-item:hover img { transform: scale(1.04); }
+
+    /* ── CONTACT ── */
+    .contact { background: var(--black-2); }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+    .contact-item {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      margin-bottom: 2rem;
+      opacity: 0;
+      transform: translateX(-20px);
+      transition: opacity 0.5s, transform 0.5s;
+    }
+    .contact-item.visible { opacity: 1; transform: translateX(0); }
+    .contact-icon {
+      width: 42px;
+      height: 42px;
+      background: rgba(204,0,0,0.12);
+      border: 1px solid rgba(204,0,0,0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--red);
+    }
+    .contact-label {
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 0.3rem;
+    }
+    .contact-value {
+      font-size: 0.92rem;
+      color: var(--gray);
+      line-height: 1.6;
+      font-weight: 300;
+    }
+    .contact-value a { color: var(--gray); text-decoration: none; transition: color 0.25s; }
+    .contact-value a:hover { color: var(--white); }
+
+    .wa-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7rem;
+      background: #25D366;
+      color: #fff;
+      font-family: 'Roboto', sans-serif;
+      font-weight: 700;
+      font-size: 0.82rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 1rem 2rem;
+      border-radius: 2px;
+      text-decoration: none;
+      margin-top: 0.5rem;
+      transition: opacity 0.25s, transform 0.2s;
+    }
+    .wa-btn:hover { opacity: 0.88; transform: translateY(-2px); }
+
+    /* Form */
+    .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.35rem; }
+    .form-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gray-dim);
+    }
+    .form-input, .form-textarea, .form-select {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 2px;
+      padding: 0.85rem 1rem;
+      min-height: 44px;
+      color: var(--white);
+      font-family: 'Roboto', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 300;
+      transition: border-color 0.25s;
+      width: 100%;
+      appearance: none;
+    }
+    .form-input:focus, .form-textarea:focus, .form-select:focus {
+      outline: none;
+      border-color: var(--red);
+    }
+    .form-input::placeholder, .form-textarea::placeholder { color: rgba(136,136,136,0.5); }
+    .form-textarea { resize: vertical; min-height: 110px; }
+    .form-select { background-image: none; cursor: pointer; }
+    .form-select option { background: var(--black-3); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--black);
+      border-top: 3px solid var(--red);
+    }
+    .footer-top {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 4rem 5% 3rem;
+      display: grid;
+      grid-template-columns: 1.6fr 1fr 1.4fr;
+      gap: 4rem;
+    }
+    .footer-logo-img {
+      height: 36px;
+      width: auto;
+      margin-bottom: 1rem;
+      display: block;
+    }
+    .footer-tagline {
+      font-size: 0.78rem;
+      color: var(--gray-dim);
+      line-height: 1.65;
+      margin-bottom: 1.8rem;
+    }
+    .footer-social {
+      display: flex;
+      gap: 0.75rem;
+    }
+    .social-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      border: 1px solid rgba(255,255,255,0.14);
+      color: var(--gray-dim);
+      text-decoration: none;
+      transition: background 0.25s, border-color 0.25s, color 0.25s;
+    }
+    .social-btn:hover {
+      background: var(--red);
+      border-color: var(--red);
+      color: var(--white);
+    }
+    .social-btn svg { display: block; }
+    .footer-heading {
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--white);
+      margin-bottom: 1.2rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    .footer-nav ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    .footer-nav ul a {
+      font-size: 0.8rem;
+      color: var(--gray-dim);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-nav ul a:hover { color: var(--white); }
+    .footer-contact address,
+    .footer-contact p {
+      font-style: normal;
+      font-size: 0.8rem;
+      color: var(--gray-dim);
+      line-height: 1.7;
+      margin-bottom: 0.7rem;
+    }
+    .footer-contact a { color: var(--gray-dim); text-decoration: none; transition: color 0.2s; }
+    .footer-contact a:hover { color: var(--white); }
+    .footer-contact .footer-hours-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      margin-top: 0.5rem;
+      margin-bottom: 0.2rem;
+    }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.07);
+      padding: 1.25rem 5%;
+    }
+    .footer-bottom-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .footer-copy {
+      font-size: 0.68rem;
+      color: rgba(255,255,255,0.28);
+    }
+    .footer-credit {
+      font-size: 0.68rem;
+      color: rgba(255,255,255,0.28);
+    }
+    .footer-credit a {
+      color: var(--red);
+      text-decoration: none;
+      font-weight: 700;
+      transition: color 0.2s;
+    }
+    .footer-credit a:hover { color: #ff2222; }
+    /* ── RESPONSIVE ── */
+
+    /* Tablet (≤ 900px) */
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      section { padding: 5rem 5%; }
+
+      /* Hero */
+      .hero-scroll { display: none; }
+      .hero-content { grid-template-columns: 1fr; gap: 2.5rem; padding: 7rem 5% 4rem; }
+      .hero-title { font-size: clamp(3rem, 10vw, 5rem); }
+      .hero-video-box { max-width: 560px; margin: 0 auto; }
+
+      /* About */
+      .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .about-image-wrap {
+        width: 100%;
+        max-width: 280px;
+        margin: 0 auto;
+        margin-bottom: 3rem;
+      }
+      .about-img { width: 100%; height: auto; }
+
+      /* Offer — apilado: imagen arriba, gradiente hacia abajo */
+      .offer-inner { grid-template-columns: 1fr; min-height: unset; }
+      .offer-image-col { height: 420px; }
+      .offer-image-col::after {
+        background: linear-gradient(to bottom, transparent 40%, var(--black-2) 100%);
+      }
+      .offer-content { padding: 2.5rem 5% 4rem; }
+
+      /* Gallery — 2 columnas en tablet */
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+
+      /* Contact */
+      .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .wa-btn { width: 100%; justify-content: center; }
+
+      /* Footer */
+      .footer-top { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+      .footer-brand { grid-column: 1 / -1; }
+      .footer-social { justify-content: flex-start; }
+    }
+
+    /* Teléfono (≤ 600px) */
+    @media (max-width: 600px) {
+      section { padding: 4rem 5%; }
+
+      /* Hero — ocultar video en móvil, mantener solo el texto */
+      .hero-video-box { display: none; }
+      .hero-content { padding: 6rem 5% 3.5rem; gap: 2rem; }
+      .hero-title { font-size: clamp(2.4rem, 11vw, 3rem); }
+      .hero-subtitle { letter-spacing: 0.1em; font-size: 0.82rem; }
+      .hero-actions { flex-direction: column; gap: 0.75rem; }
+      .hero-actions a { width: 100%; text-align: center; justify-content: center; }
+
+      /* About */
+      .about-image-wrap { max-width: 260px; margin-bottom: 3.5rem; }
+      .about-image-wrap::before { top: -10px; left: -10px; right: 10px; bottom: 10px; }
+      .about-badge { width: 74px; height: 74px; right: -1rem; bottom: -1rem; }
+      .about-badge strong { font-size: 1.8rem; }
+      .about-badge span { font-size: 0.46rem; }
+      .about-text .btn-primary { width: 100%; justify-content: center; }
+
+      /* Services */
+      .services-header { flex-direction: column; align-items: flex-start; gap: 1.2rem; }
+      .services-header .btn-outline { width: 100%; text-align: center; justify-content: center; }
+      .services-grid { grid-template-columns: 1fr; }
+      .service-card { padding: 2rem; }
+
+      /* Offer */
+      .offer-image-col { height: 240px; }
+      .offer-content { padding: 2rem 5% 3rem; }
+      .offer-content .btn-primary { width: 100%; justify-content: center; }
+      .offer-price { font-size: 3rem; }
+
+      /* Gallery — 1 columna en móvil */
+      .gallery-grid { grid-template-columns: 1fr; }
+
+      /* Contact */
+      .contact-form .btn-primary { width: 100%; justify-content: center; }
+
+      /* Footer */
+      .footer-top { grid-template-columns: 1fr; gap: 2rem; padding: 3rem 5% 2rem; }
+      .footer-bottom-inner { flex-direction: column; text-align: center; gap: 0.4rem; }
+    }
+
+    /* Teléfono muy pequeño (≤ 380px) */
+    @media (max-width: 380px) {
+      .mobile-menu a { font-size: 1.3rem; }
+      .about-image-wrap { max-width: 220px; }
+      .offer-bank-row { flex-direction: column; gap: 0.1rem; }
+      .offer-bank-row span:last-child { font-size: 0.78rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .hero-tag, .hero-title, .hero-subtitle, .hero-actions,
+      .reveal, .reveal-left, .reveal-right,
+      .service-card, .gallery-item, .contact-item {
+        opacity: 1; transform: none; transition: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="mainNav">
+    <a href="#inicio" class="nav-logo">
+      <img src="https://barberiacristian.cl/wp-content/uploads/2022/08/logo_barberia_cristian.svg"
+           alt="Barbería Cristian"
+           onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size:1.1rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;color:#fff;\'>Barbería Cristian</span>';" />
+    </a>
+    <ul class="nav-links">
+      <li><a href="#nosotros">Nosotros</a></li>
+      <li><a href="#servicios">Servicios</a></li>
+      <li><a href="#oferta">Oferta</a></li>
+      <li><a href="#galeria">Galería</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+      <li><a href="tel:+56986308366" class="nav-cta">Reservar Hora</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Abrir menú">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#nosotros" class="mobile-link">Nosotros</a>
+    <a href="#servicios" class="mobile-link">Servicios</a>
+    <a href="#oferta" class="mobile-link">Oferta</a>
+    <a href="#galeria" class="mobile-link">Galería</a>
+    <a href="#contacto" class="mobile-link">Contacto</a>
+    <a href="tel:+56986308366" class="m-cta mobile-link">Reservar Hora</a>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero" id="inicio">
+    <div class="hero-bg" id="heroBg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-overlay-gradient"></div>
+    <div class="hero-content">
+      <!-- Texto -->
+      <div class="hero-text">
+        <div class="hero-tag" id="heroTag">20 Años de Experiencia</div>
+        <h1 class="hero-title" id="heroTitle">Barbería<br />Cristian</h1>
+        <p class="hero-subtitle" id="heroSub">Cuidamos tu look</p>
+        <div class="hero-actions" id="heroActions">
+          <a href="tel:+56986308366" class="btn-primary">Reservar Hora</a>
+          <a href="https://wa.me/56986308366" class="btn-outline" target="_blank" rel="noopener">WhatsApp</a>
+        </div>
+      </div>
+      <!-- Video recuadro -->
+      <div class="hero-video-box" id="heroVideoBox">
+        <iframe
+          src="https://www.youtube.com/embed/ibyKWEAXiFc?rel=0&modestbranding=1"
+          title="Barbería Cristian — Rancagua"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+        <div class="hero-video-label">Barbería Cristian · Rancagua</div>
+      </div>
+    </div>
+    <div class="hero-scroll">Scroll</div>
+  </section>
+
+
+  <!-- ABOUT -->
+  <section class="about" id="nosotros">
+    <div class="section-inner">
+      <div class="about-grid">
+        <div class="about-image-wrap reveal-left">
+          <img
+            class="about-img"
+            src="https://barberiacristian.cl/wp-content/uploads/2022/08/cristian_acerca.png"
+            alt="Cristian Arriaza, barbero con 20 años de experiencia"
+            loading="lazy"
+          />
+          <div class="about-badge">
+            <strong>20</strong>
+            <span>años de<br />exp.</span>
+          </div>
+        </div>
+        <div class="about-text reveal-right">
+          <div class="section-tag">Acerca de nosotros</div>
+          <h2 class="section-title">Cuida el detalle y el trato<br />con el cliente</h2>
+          <p>La <strong>Barbería Cristian</strong> cuenta con 20 años de experiencia cuidando de tu look. Sabe lo que te quedará mejor, cómo cortarte el pelo y arreglarte la barba.</p>
+          <p>Atendido por su dueño <strong>Cristian Arriaza</strong>, oriundo de Doriñue, quien siempre tiene una sonrisa para recibir a sus clientes.</p>
+
+          <div class="about-detail" style="margin-top:1.5rem">
+            <div class="about-detail-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div class="about-detail-text">
+              <strong>Ubicación</strong>
+              <span>Av. Freire 659, Rancagua — Chile</span>
+            </div>
+          </div>
+          <div class="about-detail">
+            <div class="about-detail-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div class="about-detail-text">
+              <strong>Horario</strong>
+              <span>Lunes a viernes · 10:00–14:00 h / 15:30–19:00 h</span>
+            </div>
+          </div>
+          <div class="about-detail">
+            <div class="about-detail-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg>
+            </div>
+            <div class="about-detail-text">
+              <strong>Especialidad</strong>
+              <span>Cortes a máquina y tijera · barba y bigotes</span>
+            </div>
+          </div>
+
+          <a href="tel:+56986308366" class="btn-primary" style="margin-top:2rem;">
+            Reservar Hora
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="services" id="servicios">
+    <div class="section-inner">
+      <div class="services-header">
+        <div>
+          <div class="section-tag reveal">Servicios</div>
+          <h2 class="section-title reveal" style="transition-delay:.1s">Nuestros Servicios</h2>
+        </div>
+        <a href="tel:+56986308366" class="btn-outline reveal" style="transition-delay:.2s; white-space:nowrap;">
+          Reservar <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-left:4px;vertical-align:middle"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+      <div class="services-grid">
+        <div class="service-card">
+          <img
+            class="service-card-img"
+            src="https://barberiacristian.cl/wp-content/uploads/2022/08/barberia_servicio1.png"
+            alt="Corte de caballero"
+            loading="lazy"
+            onerror="this.outerHTML='<div class=\'service-card-img-placeholder\'>[FOTO SERVICIO]</div>'"
+          />
+          <div class="service-card-tag">Caballeros</div>
+          <h3 class="service-card-title">Corte de Caballero</h3>
+          <p class="service-card-desc">Cortes exclusivos para hombres, a máquina o tijera, en cualquier estilo: moderno, juvenil, militar o clásico. <strong style="color:var(--white)">Incluye barba y bigotes.</strong></p>
+          <div class="service-card-price">$15.000</div>
+          <div class="service-card-price-note">Incluye barba y bigotes</div>
+        </div>
+        <div class="service-card" style="transition-delay:.15s">
+          <img class="service-card-img" src="assets/barberia.jpg" alt="Corte de niño y escolar" loading="lazy" />
+          <div class="service-card-tag">Niños y escolares</div>
+          <h3 class="service-card-title">Corte de Niño y Escolar</h3>
+          <p class="service-card-desc">Cortes exclusivos para niños, al estilo moderno y también para la escuela. Ambiente cómodo y amigable para los más pequeños.</p>
+          <div class="service-card-price">$10.000</div>
+          <div class="service-card-price-note">Niños y escolares</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OFFER -->
+  <section class="offer" id="oferta">
+    <div class="offer-inner">
+      <div class="offer-image-col reveal-left">
+        <img
+          src="https://barberiacristian.cl/wp-content/uploads/2022/08/IMG_10054_OK-1024x740-1.jpg"
+          alt="Pack 12 cortes"
+          loading="lazy"
+        />
+        <div class="offer-badge">Oferta especial</div>
+      </div>
+      <div class="offer-content reveal-right">
+        <div class="section-tag">Ahorra todo el año</div>
+        <h2 class="section-title offer-text">Pack de 12 Cortes</h2>
+        <p style="color:var(--gray);font-size:0.92rem;line-height:1.8;font-weight:300;">La forma más inteligente de cuidar tu look. Paga una vez y disfruta 12 cortes durante el año sin preocuparte por nada más.</p>
+        <div class="offer-price-wrap">
+          <div class="offer-price">$100.000</div>
+          <div class="offer-price-detail">
+            pack anual<br />
+            <span class="offer-savings">~ $8.333 por corte</span>
+          </div>
+        </div>
+        <ul class="offer-features">
+          <li>12 cortes de caballero durante el año</li>
+          <li>Incluye barba y bigotes en cada visita</li>
+          <li>Úsalos a tu ritmo, sin caducidad mensual</li>
+          <li>Atención personalizada garantizada</li>
+        </ul>
+        <div class="offer-bank">
+          <div class="offer-bank-title">Datos de transferencia</div>
+          <div class="offer-bank-row"><span>Banco</span><span>Banco Estado</span></div>
+          <div class="offer-bank-row"><span>RUT</span><span>12.692.595-6</span></div>
+          <div class="offer-bank-row"><span>Cuenta de Ahorro</span><span>38164128358</span></div>
+        </div>
+        <a href="https://wa.me/56986308366" class="btn-primary" style="margin-top:1.5rem;" target="_blank" rel="noopener">
+          Contratar Pack <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-left:4px;vertical-align:middle"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section class="gallery" id="galeria">
+    <div class="section-inner">
+      <div class="section-tag reveal">Galería</div>
+      <h2 class="section-title reveal" style="transition-delay:.1s">Nuestro Trabajo</h2>
+      <div class="gallery-grid">
+        <div class="gallery-item">
+          <img src="https://barberiacristian.cl/wp-content/uploads/2022/08/IMG_9912_OK-1-1024x741-1.jpg" alt="Barbería Cristian — interior" loading="lazy" />
+        </div>
+        <div class="gallery-item" style="transition-delay:.1s">
+          <img src="https://barberiacristian.cl/wp-content/uploads/2022/08/barberia_servicio1.png" alt="Barbería Cristian — corte de caballero" loading="lazy" />
+        </div>
+        <div class="gallery-item" style="transition-delay:.2s">
+          <img src="https://barberiacristian.cl/wp-content/uploads/2022/08/barberia_servicio2.png" alt="Barbería Cristian — servicio completo" loading="lazy" />
+        </div>
+        <div class="gallery-item" style="transition-delay:.3s">
+          <img src="https://barberiacristian.cl/wp-content/uploads/2022/09/hero-barberia-cristian.jpg" alt="Barbería Cristian — local" loading="lazy" />
+        </div>
+        <div class="gallery-item" style="transition-delay:.4s">
+          <img src="https://barberiacristian.cl/wp-content/uploads/2022/08/IMG_10054_OK-1024x740-1.jpg" alt="Barbería Cristian — trabajo" loading="lazy" />
+        </div>
+        <div class="gallery-item" style="transition-delay:.5s">
+          <img src="https://barberiacristian.cl/wp-content/uploads/2022/09/hero-barberia-cristian-3.jpg" alt="Barbería Cristian — ambiente" loading="lazy" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contacto">
+    <div class="section-inner">
+      <div class="contact-grid">
+        <div>
+          <div class="section-tag reveal">Contacto</div>
+          <h2 class="section-title reveal" style="transition-delay:.1s; margin-bottom:2.5rem;">¿Listo para tu<br />nuevo look?</h2>
+
+          <div class="contact-item">
+            <div class="contact-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13 19.79 19.79 0 0 1 1.63 4.4 2 2 0 0 1 3.6 2.18h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 9a16 16 0 0 0 6.06 6.06l.92-.92a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </div>
+            <div>
+              <div class="contact-label">Teléfono</div>
+              <div class="contact-value"><a href="tel:+56986308366">+56 9 8630 8366</a></div>
+            </div>
+          </div>
+          <div class="contact-item" style="transition-delay:.12s">
+            <div class="contact-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div>
+              <div class="contact-label">Dirección</div>
+              <div class="contact-value">Av. Freire 659, Rancagua<br />Chile</div>
+            </div>
+          </div>
+          <div class="contact-item" style="transition-delay:.24s">
+            <div class="contact-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div>
+              <div class="contact-label">Horario</div>
+              <div class="contact-value">Lunes a viernes<br />10:00–14:00 h · 15:30–19:00 h</div>
+            </div>
+          </div>
+
+          <a href="https://wa.me/56986308366" class="wa-btn" target="_blank" rel="noopener">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.116.555 4.103 1.523 5.83L.057 23.857l6.194-1.424A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.017-1.373l-.36-.214-3.727.857.875-3.625-.234-.372A9.818 9.818 0 1112 21.818z"/></svg>
+            Escribir por WhatsApp
+          </a>
+        </div>
+
+        <div class="reveal-right">
+          <form class="contact-form" onsubmit="handleForm(event)">
+            <div class="form-group">
+              <label class="form-label">Nombre</label>
+              <input type="text" class="form-input" placeholder="Tu nombre" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Teléfono</label>
+              <input type="tel" class="form-input" placeholder="+56 9 ..." />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Servicio de interés</label>
+              <select class="form-select form-input">
+                <option value="">Selecciona un servicio</option>
+                <option>Corte de Caballero — $15.000</option>
+                <option>Corte de Niño y Escolar — $10.000</option>
+                <option>Pack 12 Cortes — $100.000</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Mensaje (opcional)</label>
+              <textarea class="form-textarea" placeholder="¿Algo que quieras contarnos?"></textarea>
+            </div>
+            <button type="submit" class="btn-primary" style="justify-content:center;">
+              Enviar por WhatsApp
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+
+      <!-- Marca -->
+      <div class="footer-brand">
+        <img
+          class="footer-logo-img"
+          src="https://barberiacristian.cl/wp-content/uploads/2022/08/logo_barberia_cristian.svg"
+          alt="Barbería Cristian"
+          onerror="this.style.display='none';"
+        />
+        <p class="footer-tagline">Tu barbería de confianza en<br>Rancagua, Chile.<br>Más de 20 años dando el mejor corte.</p>
+        <div class="footer-social">
+          <!-- Instagram — actualiza el href con tu perfil real -->
+          <a href="#" class="social-btn" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+              <circle cx="12" cy="12" r="4"/>
+              <circle cx="17.5" cy="6.5" r="0.1" fill="currentColor" stroke="none"/>
+              <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/>
+            </svg>
+          </a>
+          <!-- Facebook — actualiza el href con tu perfil real -->
+          <a href="#" class="social-btn" target="_blank" rel="noopener" aria-label="Facebook">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+            </svg>
+          </a>
+          <!-- YouTube -->
+          <a href="https://www.youtube.com/watch?v=ibyKWEAXiFc" class="social-btn" target="_blank" rel="noopener" aria-label="YouTube">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/>
+              <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="currentColor" stroke="none"/>
+            </svg>
+          </a>
+          <!-- WhatsApp -->
+          <a href="https://wa.me/56986308366" class="social-btn" target="_blank" rel="noopener" aria-label="WhatsApp">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Navegación -->
+      <div class="footer-nav">
+        <p class="footer-heading">Sitio</p>
+        <ul>
+          <li><a href="#nosotros">Nosotros</a></li>
+          <li><a href="#servicios">Servicios</a></li>
+          <li><a href="#oferta">Oferta</a></li>
+          <li><a href="#galeria">Galería</a></li>
+          <li><a href="#contacto">Contacto</a></li>
+        </ul>
+      </div>
+
+      <!-- Contacto -->
+      <div class="footer-contact">
+        <p class="footer-heading">Contacto</p>
+        <address>Av. Freire 659<br>Rancagua, Chile</address>
+        <p><a href="tel:+56986308366">+56 9 8630 8366</a></p>
+        <p><a href="https://wa.me/56986308366" target="_blank" rel="noopener">WhatsApp</a></p>
+        <p class="footer-hours-label">Horario</p>
+        <p>Lun – Vie<br>10:00–14:00 · 15:30–19:00</p>
+      </div>
+
+    </div>
+
+    <!-- Barra inferior -->
+    <div class="footer-bottom">
+      <div class="footer-bottom-inner">
+        <p class="footer-copy">© 2024 Barbería Cristian. Todos los derechos reservados.</p>
+        <p class="footer-credit">Diseñado y desarrollado por <a href="https://conectaengine.cl" target="_blank" rel="noopener">Conecta Engine</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ── NAV SCROLL ──
+    const nav = document.getElementById('mainNav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+
+    // ── PARALLAX HERO ──
+    const heroBg = document.getElementById('heroBg');
+    window.addEventListener('scroll', () => {
+      if (heroBg && window.scrollY < window.innerHeight) {
+        heroBg.style.transform = `scale(1.05) translateY(${window.scrollY * 0.2}px)`;
+      }
+    }, { passive: true });
+
+    // ── HAMBURGER ──
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      mobileMenu.classList.toggle('open');
+      document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+    });
+    document.querySelectorAll('.mobile-link').forEach(l => {
+      l.addEventListener('click', () => {
+        hamburger.classList.remove('open');
+        mobileMenu.classList.remove('open');
+        document.body.style.overflow = '';
+      });
+    });
+
+    // ── HERO ENTRANCE ──
+    window.addEventListener('load', () => {
+      ['heroTag','heroTitle','heroSub','heroActions'].forEach((id, i) => {
+        const el = document.getElementById(id);
+        if (el) setTimeout(() => el.classList.add('visible'), i * 80 + 80);
+      });
+      const vbox = document.getElementById('heroVideoBox');
+      if (vbox) setTimeout(() => vbox.classList.add('visible'), 400);
+    });
+
+    // ── INTERSECTION OBSERVER ──
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll(
+      '.reveal, .reveal-left, .reveal-right, .service-card, .gallery-item, .contact-item'
+    ).forEach(el => observer.observe(el));
+
+    // ── COUNTERS ──
+    const counterObs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          startCounter(entry.target);
+          counterObs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.5 });
+    document.querySelectorAll('.counter').forEach(el => counterObs.observe(el));
+
+    function startCounter(el) {
+      const target = parseInt(el.dataset.target, 10);
+      const dur = 1500;
+      const start = performance.now();
+      function step(now) {
+        const p = Math.min((now - start) / dur, 1);
+        const ease = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.floor(ease * target).toLocaleString('es-CL');
+        if (p < 1) requestAnimationFrame(step);
+        else el.textContent = target.toLocaleString('es-CL');
+      }
+      requestAnimationFrame(step);
+    }
+
+    // ── FORM → WHATSAPP ──
+    function handleForm(e) {
+      e.preventDefault();
+      const f = e.target;
+      const nombre   = f.querySelector('input[type="text"]').value;
+      const telefono = f.querySelector('input[type="tel"]').value;
+      const servicio = f.querySelector('select').value;
+      const mensaje  = f.querySelector('textarea').value;
+      let text = `Hola Cristian, me llamo *${nombre}*`;
+      if (telefono) text += `, mi teléfono es ${telefono}`;
+      if (servicio) text += `. Me interesa: ${servicio}`;
+      if (mensaje)  text += `. ${mensaje}`;
+      window.open(`https://wa.me/56986308366?text=${encodeURIComponent(text)}`, '_blank');
+    }
+  </script>
+</body>
+</html>
